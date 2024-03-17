@@ -24,11 +24,15 @@ class ArticleModel {
         source: source,
         author: json['author'],
         title: json['title'],
-        description: json['description'] ,
+        description: json['description'],
         imgUrl: json['urlToImage'] == null
             ? null
             : Uri.parse(json['urlToImage'] as String),
         date: DateTime.parse(json['publishedAt'] as String),
         content: json['content']);
+  }
+
+  static List<ArticleModel> fromJsonArray(List<dynamic> array) {
+    return array.map((a) => ArticleModel.fromJson(a)).toList();
   }
 }

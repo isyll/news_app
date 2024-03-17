@@ -1,41 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:news_app/models/article_model.dart';
+import 'package:news_app/utils/string.dart';
 
 class ArticleItem extends StatelessWidget {
   const ArticleItem(this.article, {super.key});
 
   final ArticleModel article;
 
-  final _decoration = const BoxDecoration(color: Colors.black12, boxShadow: [
-    // BoxShadow(
-    //   color: Colors.greenAccent,
-    //   offset: Offset(
-    //     5.0,
-    //     5.0,
-    //   ),
-    //   blurRadius: 10.0,
-    //   spreadRadius: 2.0,
-    // ),
-    // BoxShadow(
-    //   color: Colors.white,
-    //   offset: Offset(0.0, 0.0),
-    //   blurRadius: 0.0,
-    //   spreadRadius: 0.0,
-    // ),
-  ]);
+  final _decoration = const BoxDecoration(color: Colors.black12, boxShadow: []);
 
   final _titleStyle =
-      const TextStyle(fontWeight: FontWeight.bold, fontSize: 24);
+      const TextStyle(fontWeight: FontWeight.bold, fontSize: 22);
 
   Widget _articleImg(ArticleModel article) {
     final widget = article.imgUrl == null
-        ? SizedBox(height: 22, width: 22, child: Container(color: Colors.red))
-        : Image.network(article.imgUrl.toString(), height: 70);
-    return Padding(
-      padding: const EdgeInsets.only(right: 16),
-      child: widget,
-    );
+        ? const Padding(padding: EdgeInsets.all(5))
+        : Image.network(article.imgUrl.toString());
+
+    return ClipRect(child: widget);
   }
 
   @override
@@ -43,11 +25,12 @@ class ArticleItem extends StatelessWidget {
     return Container(
         decoration: _decoration,
         child: Padding(
-            padding:
-                const EdgeInsets.only(top: 0, bottom: 12, left: 6, right: 8),
-            child: Row(children: [
+            padding: const EdgeInsets.only(top: 0, left: 5, right: 5),
+            child: Column(children: [
               _articleImg(article),
-              Flexible(child: Text(article.title, style: _titleStyle))
+              const SizedBox(height: 10),
+              Text(truncateString(article.title, 67), style: _titleStyle),
+              const SizedBox(height: 10),
             ])));
   }
 }

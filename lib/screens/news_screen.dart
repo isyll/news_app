@@ -1,8 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:news_app/models/article_model.dart';
-import 'package:news_app/services/fake_datas.dart';
-import 'package:news_app/widgets/article_item.dart';
+import 'package:news_app/services/api_service.dart';
+import 'package:news_app/widgets/article_list.dart';
 
 class NewsScreen extends StatefulWidget {
   const NewsScreen({super.key});
@@ -23,12 +25,13 @@ class _NewsScreenState extends State<NewsScreen> {
     });
 
     try {
-      await Future.delayed(const Duration(seconds: 5), () {
-        setState(() {
-          _articles = fakeArticles(15);
-          _isLoading = false;
-          _notFound = _articles.isEmpty;
-        });
+      final response = await ApiService.getTopHeadlines('us');
+      setState(() {
+        final jsonData = json.decode(response.body);
+        _articles = ArticleModel.fromJsonArray(
+            jsonData['articles']);
+        _isLoading = false;
+        _notFound = _articles.isEmpty;
       });
     } catch (error) {
       if (kDebugMode) {
@@ -40,9 +43,6 @@ class _NewsScreenState extends State<NewsScreen> {
       });
     }
   }
-
-  List<Widget> get _articlesWidgets =>
-      _articles.map((article) => ArticleItem(article)).toList();
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +57,7 @@ class _NewsScreenState extends State<NewsScreen> {
       if (!_notFound && _articles.isEmpty) {
         _fetchArticles();
       }
-      return ListView(children: _articlesWidgets);
+      return ArticleList(articles: _articles);
     }
   }
 }
