@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:news_app/models/article_model.dart';
+import 'package:news_app/screens/article_screen.dart';
 import 'package:news_app/utils/string.dart';
 
 class ArticleItem extends StatelessWidget {
@@ -7,7 +8,7 @@ class ArticleItem extends StatelessWidget {
 
   final ArticleModel article;
 
-  final _decoration = const BoxDecoration(color: Colors.black12, boxShadow: []);
+  final _decoration = const BoxDecoration(color: Colors.black12);
 
   final _titleStyle =
       const TextStyle(fontWeight: FontWeight.bold, fontSize: 22);
@@ -22,15 +23,23 @@ class ArticleItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        decoration: _decoration,
-        child: Padding(
-            padding: const EdgeInsets.only(top: 0, left: 5, right: 5),
-            child: Column(children: [
-              _articleImg(article),
-              const SizedBox(height: 10),
-              Text(truncateString(article.title, 67), style: _titleStyle),
-              const SizedBox(height: 10),
-            ])));
+    return TextButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => ArticleScreen(article: article)),
+          );
+        },
+        child: Container(
+            decoration: _decoration,
+            child: Padding(
+                padding: const EdgeInsets.only(top: 0, left: 5, right: 5),
+                child: Column(children: [
+                  _articleImg(article),
+                  const SizedBox(height: 10),
+                  Text(truncateString(article.title, 67), style: _titleStyle),
+                  const SizedBox(height: 10),
+                ]))));
   }
 }

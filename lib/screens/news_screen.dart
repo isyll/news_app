@@ -28,8 +28,7 @@ class _NewsScreenState extends State<NewsScreen> {
       final response = await ApiService.getTopHeadlines('us');
       setState(() {
         final jsonData = json.decode(response.body);
-        _articles = ArticleModel.fromJsonArray(
-            jsonData['articles']);
+        _articles = ArticleModel.fromJsonArray(jsonData['articles']);
         _isLoading = false;
         _notFound = _articles.isEmpty;
       });
@@ -44,8 +43,7 @@ class _NewsScreenState extends State<NewsScreen> {
     }
   }
 
-  @override
-  Widget build(BuildContext context) {
+  get _widget {
     if (_isLoading) {
       return const Center(
         child: Text(
@@ -59,5 +57,10 @@ class _NewsScreenState extends State<NewsScreen> {
       }
       return ArticleList(articles: _articles);
     }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(body: _widget);
   }
 }
