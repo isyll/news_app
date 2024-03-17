@@ -14,7 +14,7 @@ class ArticleItem extends StatelessWidget {
 
   Widget _articleImg(ArticleModel article) {
     final widget = article.imgUrl == null
-        ? const Padding(padding: EdgeInsets.all(5))
+        ? const Padding(padding: EdgeInsets.symmetric(vertical: 5))
         : Image.network(article.imgUrl.toString());
 
     return ClipRect(child: widget);
